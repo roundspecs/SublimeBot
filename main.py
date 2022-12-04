@@ -198,6 +198,7 @@ async def accept(itr: ds.Interaction):
         embed.description = f"{u1_mention} :crossed_swords: {u2_mention}"
         embed.add_field(name="Rating", value=rating)
         embed.add_field(name="Problem URL", value=problem_url, inline=False)
+        embed.set_footer(text="Type `/complete` after completing the challenge")
         await itr.followup.send(
             content=message_content,
             embed=embed,
