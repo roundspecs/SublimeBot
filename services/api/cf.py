@@ -30,7 +30,7 @@ def get_all_accepted_probs(handle: str) -> dict[tuple[int, str], int]:
                 submission.get("contestId"),
                 submission.get("problem").get("index"),
             )
-            creationTime = submission.get("creationTimeSeconds"),
+            creationTime = submission.get("creationTimeSeconds")
             subs[prob] = creationTime
     return subs
 
@@ -68,4 +68,4 @@ if __name__ == "__main__":
     # print(get_all_attempted_probs("roundspecs"))
     # print(get_all_problemset_probs(rating=800))
     # set_problemset_json()
-    print(get_problemset_json())
+    print(get_all_accepted_probs("roundspecs"))
