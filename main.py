@@ -131,8 +131,8 @@ async def duel(itr: ds.Interaction, opponent: ds.Member, rating: int):
     elif duels_db.duel_exists(itr.guild_id, itr.channel_id, uid1):
         embed.description = (
             "You are already in a duel\n"
-            ":point_right:  Type `/drop` to drop the duel\n"
-            ":point_right:  Type `/duel_list` to list all duels"
+            ":point_right:  Type `/drop` to drop the duel"
+            # ":point_right:  Type `/duel_list` to list all duels"
         )
         ephemeral = True
     elif duels_db.duel_exists(itr.guild_id, itr.channel_id, uid2):
