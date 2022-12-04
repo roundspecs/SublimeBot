@@ -138,8 +138,8 @@ async def duel(itr: ds.Interaction, opponent: ds.Member, rating: int):
     elif duels_db.duel_exists(itr.guild_id, itr.channel_id, uid2):
         embed.description = (
             f"{opponent.mention} is already in a duel\n"
-            ":point_right:  Type `/drop` to drop the duel\n"
-            ":point_right:  Type `/duel_list` to list all duels"
+            ":point_right:  Type `/drop` to drop the duel"
+            # ":point_right:  Type `/duel_list` to list all duels"
         )
     else:
         duels_db.new(itr.guild_id, itr.channel_id, uid1, uid2, rating)
