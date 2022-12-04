@@ -148,7 +148,7 @@ async def duel(itr: ds.Interaction, opponent: ds.Member, rating: int):
         embed.add_field(name="Opponent", value=itr.user.mention)
         embed.add_field(name="rating", value=rating)
         embed.color = None
-        embed.set_footer(text="Type `/accept` to accept the duel")
+        embed.set_footer(text="Type /accept to accept the duel")
     await itr.followup.send(
         content=message_content,
         embed=embed,
@@ -198,7 +198,7 @@ async def accept(itr: ds.Interaction):
         embed.description = f"{u1_mention} :crossed_swords: {u2_mention}"
         embed.add_field(name="Rating", value=rating)
         embed.add_field(name="Problem URL", value=problem_url, inline=False)
-        embed.set_footer(text="Type `/complete` after completing the challenge")
+        embed.set_footer(text="Type /complete after completing the challenge")
         await itr.followup.send(
             content=message_content,
             embed=embed,
