@@ -29,7 +29,7 @@ def uid2handle(uid: int) -> str:
     raise UidDoesNotExist
 
 
-def get_all_uid_handle() -> tuple[list, list]:
+def get_all_uid_handle():
     """Returns a list of all uid's and handles"""
     df = pd.read_csv(HANDLES_DB)
     return df["uid"].to_list(), df["handle"].to_list()

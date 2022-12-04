@@ -11,7 +11,7 @@ def handle_exists(handle: str):
     return True
 
 
-def get_all_attempted_probs(handle: str) -> set[tuple[int, str]]:
+def get_all_attempted_probs(handle: str):
     params = {"handle": handle}
     submissions = __query_api("user.status", params=params)
     subs = set()
@@ -20,7 +20,7 @@ def get_all_attempted_probs(handle: str) -> set[tuple[int, str]]:
     return subs
 
 
-def get_all_accepted_probs(handle: str) -> dict[tuple[int, str], int]:
+def get_all_accepted_probs(handle: str):
     params = {"handle": handle}
     submissions = __query_api("user.status", params=params)
     subs = dict()
@@ -35,7 +35,7 @@ def get_all_accepted_probs(handle: str) -> dict[tuple[int, str], int]:
     return subs
 
 
-def get_all_problemset_probs(rating: int = None) -> set[tuple[int, str]]:
+def get_all_problemset_probs(rating: int = None):
     _probs = get_problemset_json()
     probs = set()
     for _prob in _probs:
