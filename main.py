@@ -254,9 +254,9 @@ async def complete(itr: ds.Interaction):
         u2 = itr.guild.get_member(uid2)
         handle1 = handles_db.uid2handle(uid1)
         handle2 = handles_db.uid2handle(uid2)
-        creationTime1 = cf.get_all_accepted_probs(handle1).get(prob)
-        creationTime2 = cf.get_all_accepted_probs(handle2).get(prob)
-        if creationTime1 == None and creationTime2 == None:
+        creationTime1 = cf.get_all_accepted_probs(handle1).get(prob, float('inf'))
+        creationTime2 = cf.get_all_accepted_probs(handle2).get(prob, float('inf'))
+        if creationTime1 == float('inf') and creationTime2 == float('inf'):
             embed.description = (
                 "None of you have completed the challenge yet\n"
                 ":point_right: Type `/drop` if you want to give up"
@@ -266,7 +266,7 @@ async def complete(itr: ds.Interaction):
             embed.title = "Duel completed"
             embed.color = None
             duels_db.drop(itr.guild_id, itr.channel_id, uid1)
-            if creationTime1 == None or creationTime2 < creationTime1:
+            if creationTime2 < creationTime1:
                 embed.description = f"{u2.mention} won against {u1.mention}!"
             else:
                 embed.description = f"{u1.mention} won against {u2.mention}!"
