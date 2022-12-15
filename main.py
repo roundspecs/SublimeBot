@@ -30,7 +30,7 @@ DESCRIPTIONS = {
 HELP = {
     "handle_set `handlle`": "Set your own handle",
     "handle_set `handlle` `member`": "Set `member`'s handle",
-    "handle_list": "Lists all registered handles in this server (incognito)",
+    "handle_list": "Lists all registered handles in this server, in alphabetic order (incognito)",
     "duel `opponent` `rating`": "Challenge `opponent` with a duel (mentions opponent)",
     # "duel_list": "List all duels (ongoing and challenged)",
     "accept": "Accept a duel",
@@ -72,28 +72,25 @@ async def handle_set(itr: ds.Interaction, handle: str, member: ds.Member = None)
 
 @bot.tree.command(description=DESCRIPTIONS["handle_list"])
 async def handle_list(itr: ds.Interaction):
-    u, h = handles_db.get_all_uid_handle()
-    user_mentions = []
-    handles = []
+    uids, handles = handles_db.get_all_uid_handle()
+    rows = []
 
     # only show hanldes of users who are present in the server
-    for uid, handle in zip(u, h):
+    for uid, handle in zip(uids, handles):
         user = itr.guild.get_member(uid)
         if user != None:
-            user_mentions.append(user.mention)
-            handles.append(handle)
-
+            rows.append((user.display_name.lower(), user.mention, handle))
+    rows.sort(key=lambda x: x[0])
     embed = ds.Embed()
     # if no users found, show error
-    if not user_mentions:
+    if not rows:
         embed.description = (
             "No handle found.\n:point_right: Type `/handleset` to set handle"
         )
         embed.color = ds.Color.red()
     else:
-        embed.title = "List of all handles"
-        embed.add_field(name="Username", value="\n".join(user_mentions))
-        embed.add_field(name="Handle", value="\n".join(handles))
+        embed.title = "List of all handles (sorted)"
+        embed.description = '\n'.join([f"{row[1]} — {row[2]}" for row in rows])
     await itr.response.send_message(embed=embed, ephemeral=True)
 
 
