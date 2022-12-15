@@ -1,2 +1,6 @@
-.env/
 __pycache__/
+# local environment variables
+.env
+# ignore vertual env
+.venv/
+db/handles.csv
