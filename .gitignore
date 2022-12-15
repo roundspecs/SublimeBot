@@ -4,3 +4,4 @@ __pycache__/
 # ignore vertual env
 .venv/
 db/handles.csv
+problemsets.json
