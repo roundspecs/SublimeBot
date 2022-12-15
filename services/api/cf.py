@@ -42,7 +42,7 @@ def get_all_problemset_probs(rating: int|None = None):
     for _prob in _probs:
         _rating = _prob.get("rating")
         if rating in [None, _rating]:
-            probs.add((_prob.get("contestId"), _prob.get("index")))
+            probs.add((_prob.get("contestId"), _prob.get("index"), _prob.get("name")))
     return probs
 
 

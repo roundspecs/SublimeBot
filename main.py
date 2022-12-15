@@ -278,6 +278,7 @@ async def complete(itr: ds.Interaction):
                 embed.description = f"{u1.mention} won against {u2.mention}!"
         await itr.followup.send(embed=embed, ephemeral=ephemeral)
 
+
 @bot.tree.command(description=DESCRIPTIONS['gimme'])
 async def gimme(itr: ds.Interaction, rating: int):
     """
@@ -300,22 +301,23 @@ async def gimme(itr: ds.Interaction, rating: int):
         embed.description = "Rating must be in a multiple of 100 between 800 to 3500"
         ephemeral = True
     else:
-        contestId, index = get_prob(uid, rating)
+        contestId, index, name = get_prob(uid, rating)
         usr_mention = itr.guild.get_member(uid).mention
         problem_url = f"https://codeforces.com/problemset/problem/{contestId}/{index}"
 
         message_content = usr_mention
-        embed.title = "An interesting problem for you"
-        embed.description = f"{usr_mention}"
+        embed.title = name
+        embed.description = f"{usr_mention} an interesting problem for you"
         embed.add_field(name="Rating", value=rating)
         embed.add_field(name="Problem URL", value=problem_url, inline=False)
         embed.url = problem_url
-        await itr.followup.send(
-            content=message_content,
-            embed=embed,
-            ephemeral=ephemeral,
-        )
-        cf.set_problemset_json()
+
+    await itr.followup.send(
+        content=message_content,
+        embed=embed,
+        ephemeral=ephemeral,
+    )
+    cf.set_problemset_json()
 
 
 @bot.tree.command(description=DESCRIPTIONS["help"])
