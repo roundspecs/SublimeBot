@@ -8,14 +8,18 @@ from discord.ext import commands
 from services.db import handles_db, duels_db
 from services.api import cf
 
-from utils import get_duel_prob
+from utils import get_duel_prob, get_prob
 
 from keep_alive import keep_alive
+
+from dotenv import load_dotenv
 
 bot = commands.Bot(command_prefix=".", intents=ds.Intents.all())
 
 logger = logging.getLogger("discord")
-logger.name = "khelafinal"
+logger.name = "SublimeBot"
+
+load_dotenv(".env")
 
 DESCRIPTIONS = {
     "handle_set": "Set or update handle",
@@ -24,6 +28,7 @@ DESCRIPTIONS = {
     "accept": "Accept a duel",
     "drop": "Drop a duel",
     "complete": "Complete a duel",
+    "gimme": "Chanllage yourself with a problem",
     "help": "Shows all commands (incognito)",
 }
 
@@ -36,6 +41,7 @@ HELP = {
     "accept": "Accept a duel",
     "drop": "Drop a duel",
     "complete": "Complete a duel",
+    "gimme `rating`": "Challange yourself with a problem",
     "help": "Shows this message",
 }
 
@@ -270,6 +276,47 @@ async def complete(itr: ds.Interaction):
         await itr.followup.send(embed=embed, ephemeral=ephemeral)
 
 
+@bot.tree.command(description=DESCRIPTIONS['gimme'])
+async def gimme(itr: ds.Interaction, rating: int):
+    """
+    :param rating: Rating of the problem
+    """
+    uid = itr.user.id
+    embed = ds.Embed(description="Setting up problem search ...")
+    await itr.response.send_message(embed=embed, ephemeral=True)
+    embed.color = ds.Color.teal()
+    embed.description = None
+    messaged_content = None
+    ephemeral = False
+    if not handles_db.uid_exists(uid):
+        embed.description = (
+            "Could not find your handle in the database\n"
+            ":point_right:  Type `/handle_set` to set your handle"
+        )
+        ephemeral = True
+    elif rating not in range(800, 3600, 100):
+        embed.description = "Rating must be in a multiple of 100 between 800 to 3500"
+        ephemeral = True
+    else:
+        contestId, index, name = get_prob(uid, rating)
+        usr_mention = itr.guild.get_member(uid).mention
+        problem_url = f"https://codeforces.com/problemset/problem/{contestId}/{index}"
+
+        message_content = usr_mention
+        embed.title = name
+        embed.description = f"{usr_mention} an interesting problem for you"
+        embed.add_field(name="Rating", value=rating)
+        embed.add_field(name="Problem URL", value=problem_url, inline=False)
+        embed.url = problem_url
+
+    await itr.followup.send(
+        content=message_content,
+        embed=embed,
+        ephemeral=ephemeral,
+    )
+    cf.set_problemset_json()
+
+
 @bot.tree.command(description=DESCRIPTIONS["help"])
 async def help(itr: ds.Interaction):
     embed = ds.Embed(title="List of all commands")
@@ -279,9 +326,9 @@ async def help(itr: ds.Interaction):
 
 
 keep_alive()
-TOKEN = os.environ["TOKEN"]
+DISCORD_TOKEN = os.environ["DISCORD_TOKEN"]
 try:
-    bot.run(TOKEN)
+    bot.run(DISCORD_TOKEN)
 except ds.errors.HTTPException:
     os.system("kill 1")
     os.system("python restarter.py")

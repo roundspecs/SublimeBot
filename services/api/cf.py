@@ -1,5 +1,6 @@
 import requests
 import json
+from os import path
 
 
 def handle_exists(handle: str):
@@ -35,24 +36,26 @@ def get_all_accepted_probs(handle: str):
     return subs
 
 
-def get_all_problemset_probs(rating: int = None):
+def get_all_problemset_probs(rating: int|None = None):
     _probs = get_problemset_json()
     probs = set()
     for _prob in _probs:
         _rating = _prob.get("rating")
         if rating in [None, _rating]:
-            probs.add((_prob.get("contestId"), _prob.get("index")))
+            probs.add((_prob.get("contestId"), _prob.get("index"), _prob.get("name")))
     return probs
 
 
 def get_problemset_json():
-    with open("problemsets.json") as json_file:
+    if not path.exists("db/problemsets.json"):
+        set_problemset_json()
+    with open("db/problemsets.json") as json_file:
         return json.load(json_file)
 
 
 def set_problemset_json():
     _probs = __query_api("problemset.problems")["problems"]
-    with open("problemsets.json", "w") as json_file:
+    with open("db/problemsets.json", "w") as json_file:
         json.dump(_probs, json_file)
 
 
