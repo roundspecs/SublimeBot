@@ -12,10 +12,14 @@ from utils import get_duel_prob
 
 from keep_alive import keep_alive
 
+from dotenv import load_dotenv
+
 bot = commands.Bot(command_prefix=".", intents=ds.Intents.all())
 
 logger = logging.getLogger("discord")
 logger.name = "khelafinal"
+
+load_dotenv(".env")
 
 DESCRIPTIONS = {
     "handle_set": "Set or update handle",
@@ -282,9 +286,9 @@ async def help(itr: ds.Interaction):
 
 
 keep_alive()
-TOKEN = os.environ["TOKEN"]
+DISCORD_TOKEN = os.environ["DISCORD_TOKEN"]
 try:
-    bot.run(TOKEN)
+    bot.run(DISCORD_TOKEN)
 except ds.errors.HTTPException:
     os.system("kill 1")
     os.system("python restarter.py")
