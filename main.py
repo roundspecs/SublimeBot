@@ -284,7 +284,7 @@ async def gimme(itr: ds.Interaction, rating: int):
     :param rating: Rating of the problem
     """
     uid = itr.user.id
-    embed = ds.Embed(description="Looking for a problem ...")
+    embed = ds.Embed(description="Setting up problem search ...")
     await itr.response.send_message(embed=embed, ephemeral=True)
     embed.color = ds.Color.teal()
     embed.description = None
@@ -300,18 +300,16 @@ async def gimme(itr: ds.Interaction, rating: int):
         embed.description = "Rating must be in a multiple of 100 between 800 to 3500"
         ephemeral = True
     else:
-        embed.description = "Searching a good problems for you ..."
-        embed.color = None
-        await itr.followup.send(embed=embed, ephemeral=True)
         contestId, index = get_prob(uid, rating)
         usr_mention = itr.guild.get_member(uid).mention
         problem_url = f"https://codeforces.com/problemset/problem/{contestId}/{index}"
 
         message_content = usr_mention
-        embed.title = "Solve the problem"
+        embed.title = "An interesting problem for you"
         embed.description = f"{usr_mention}"
         embed.add_field(name="Rating", value=rating)
         embed.add_field(name="Problem URL", value=problem_url, inline=False)
+        embed.url = problem_url
         await itr.followup.send(
             content=message_content,
             embed=embed,
