@@ -8,7 +8,7 @@ from discord.ext import commands
 from services.db import handles_db, duels_db
 from services.api import cf
 
-from utils import get_duel_prob
+from utils import get_duel_prob, get_prob
 
 from keep_alive import keep_alive
 
@@ -28,6 +28,7 @@ DESCRIPTIONS = {
     "accept": "Accept a duel",
     "drop": "Drop a duel",
     "complete": "Complete a duel",
+    "gimme": "Chanllage yourself with a problem",
     "help": "Shows all commands (incognito)",
 }
 
@@ -40,6 +41,7 @@ HELP = {
     "accept": "Accept a duel",
     "drop": "Drop a duel",
     "complete": "Complete a duel",
+    "gimme `rating`": "Challange yourself with a problem",
     "help": "Shows this message",
 }
 
@@ -275,6 +277,47 @@ async def complete(itr: ds.Interaction):
             else:
                 embed.description = f"{u1.mention} won against {u2.mention}!"
         await itr.followup.send(embed=embed, ephemeral=ephemeral)
+
+@bot.tree.command(description=DESCRIPTIONS['gimme'])
+async def gimme(itr: ds.Interaction, rating: int):
+    """
+    :param rating: Rating of the problem
+    """
+    uid = itr.user.id
+    embed = ds.Embed(description="Looking for a problem ...")
+    await itr.response.send_message(embed=embed, ephemeral=True)
+    embed.color = ds.Color.teal()
+    embed.description = None
+    messaged_content = None
+    ephemeral = False
+    if not handles_db.uid_exists(uid):
+        embed.description = (
+            "Could not find your handle in the database\n"
+            ":point_right:  Type `/handle_set` to set your handle"
+        )
+        ephemeral = True
+    elif rating not in range(800, 3600, 100):
+        embed.description = "Rating must be in a multiple of 100 between 800 to 3500"
+        ephemeral = True
+    else:
+        embed.description = "Searching a good problems for you ..."
+        embed.color = None
+        await itr.followup.send(embed=embed, ephemeral=True)
+        contestId, index = get_prob(uid, rating)
+        usr_mention = itr.guild.get_member(uid).mention
+        problem_url = f"https://codeforces.com/problemset/problem/{contestId}/{index}"
+
+        message_content = usr_mention
+        embed.title = "Solve the problem"
+        embed.description = f"{usr_mention}"
+        embed.add_field(name="Rating", value=rating)
+        embed.add_field(name="Problem URL", value=problem_url, inline=False)
+        await itr.followup.send(
+            content=message_content,
+            embed=embed,
+            ephemeral=ephemeral,
+        )
+        cf.set_problemset_json()
 
 
 @bot.tree.command(description=DESCRIPTIONS["help"])

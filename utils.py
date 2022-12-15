@@ -16,3 +16,13 @@ def get_duel_prob(uid1: int, uid2: int, rating: int):
         if prob in u_subs:
             continue
         return prob
+
+def get_prob(uid: int, rating: int):
+    handle = handles_db.uid2handle(uid)
+    tried = cf.get_all_attempted_probs(handle)
+    problems = list(cf.get_all_problemset_probs(rating=rating))
+    random.shuffle(problems)
+    for prob in problems:
+        if prob in tried:
+            continue
+        return prob
