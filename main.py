@@ -17,7 +17,7 @@ from dotenv import load_dotenv
 bot = commands.Bot(command_prefix=".", intents=ds.Intents.all())
 
 logger = logging.getLogger("discord")
-logger.name = "khelafinal"
+logger.name = "SublimeBot"
 
 load_dotenv(".env")
 
