@@ -30,8 +30,7 @@ DESCRIPTIONS = {
 }
 
 HELP = {
-    "handle_set `handlle`": "Set your own handle",
-    "handle_set `handlle` `member`": "Set `member`'s handle",
+    "handle_set `handlle`": "Set or update your own handle",
     "handle_list": "Lists all registered handles in this server, in alphabetic order (incognito)",
     "duel `opponent` `rating`": "Challenge `opponent` with a duel (mentions opponent)",
     # "duel_list": "List all duels (ongoing and challenged)",
@@ -50,15 +49,10 @@ async def on_ready():
 
 
 @bot.tree.command(description=DESCRIPTIONS["handle_set"])
-async def handle_set(itr: ds.Interaction, handle: str, member: ds.Member = None):
+async def handle_set(itr: ds.Interaction, handle: str):
     """
     :param handle: Codeforces handle of the member
-    :param member: Member of the server whose handle is being set
     """
-    # set member to self if not mentioned
-    if member == None:
-        member = itr.user
-
     embed = ds.Embed()
 
     # show error if handle does not exist
@@ -66,8 +60,8 @@ async def handle_set(itr: ds.Interaction, handle: str, member: ds.Member = None)
         embed.description = f"Could not find handle, {handle} in CF"
         embed.color = ds.Color.red()
     else:
-        handles_db.set_or_update_handle(handle, member.id)
-        embed.description = f"Handle of {member.mention} set to {handle}"
+        handles_db.set_or_update_handle(handle, itr.user.id)
+        embed.description = f"Handle of {itr.user.mention} set to {handle}"
         embed.color = ds.Color.green()
 
     await itr.response.send_message(embed=embed)
