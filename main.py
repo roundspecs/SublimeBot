@@ -11,7 +11,7 @@ from services.api import cf
 from services.db import duels_db, handles_db
 from utils import get_duel_prob, get_prob
 
-bot = commands.Bot(command_prefix=".", intents=ds.Intents.all())
+bot = commands.Bot(command_prefix=".", intents=ds.Intents.all(), help_command=None)
 
 logger = logging.getLogger("discord")
 logger.name = "SublimeBot"
