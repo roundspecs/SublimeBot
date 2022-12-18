@@ -1,6 +1,7 @@
-import requests
 import json
 from os import path
+
+import requests
 
 
 def handle_exists(handle: str):

@@ -4,15 +4,12 @@ import time
 
 import discord as ds
 from discord.ext import commands
-
-from services.db import handles_db, duels_db
-from services.api import cf
-
-from utils import get_duel_prob, get_prob
+from dotenv import load_dotenv
 
 from keep_alive import keep_alive
-
-from dotenv import load_dotenv
+from services.api import cf
+from services.db import duels_db, handles_db
+from utils import get_duel_prob, get_prob
 
 bot = commands.Bot(command_prefix=".", intents=ds.Intents.all())
 
