@@ -6,7 +6,7 @@ app = Flask("")
 
 @app.route("/")
 def home():
-    return "KhelaFinal Bot is online"
+    return "Sublime Bot is online"
 
 
 def run():
