@@ -74,7 +74,11 @@ def duel_is_ongoing(
     if uid:
         return (
             duel_exists(guild_id, channel_id, uid=uid)
-            and str(df.loc[((df["uid1"] == uid) | (df["uid2"] == uid)), "start"].to_list()[0])
+            and str(
+                df.loc[((df["uid1"] == uid) | (df["uid2"] == uid)), "start"].to_list()[
+                    0
+                ]
+            )
             != "nan"
         )
     if uid2:
@@ -105,5 +109,17 @@ def __put_df(df: pd.DataFrame, guild_id: int, channel_id: int):
 
 
 if __name__ == "__main__":
-    print(duel_exists(929276701609951362, 1038306466760773662, uid2=1018775628671094854))
-    print(duel_is_ongoing(929276701609951362, 1038306466760773662, uid2=1018775628671094854))
+    print(
+        duel_exists(
+            929276701609951362,
+            1038306466760773662,
+            uid2=1018775628671094854,
+        )
+    )
+    print(
+        duel_is_ongoing(
+            929276701609951362,
+            1038306466760773662,
+            uid2=1018775628671094854,
+        )
+    )

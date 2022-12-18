@@ -37,7 +37,7 @@ def get_all_accepted_probs(handle: str):
     return subs
 
 
-def get_all_problemset_probs(rating: int|None = None):
+def get_all_problemset_probs(rating: int | None = None):
     _probs = get_problemset_json()
     probs = set()
     for _prob in _probs:

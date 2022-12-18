@@ -87,7 +87,7 @@ async def handle_list(itr: ds.Interaction):
         embed.color = ds.Color.red()
     else:
         embed.title = "List of all handles (sorted)"
-        embed.description = '\n'.join([f"{row[1]} — {row[2]}" for row in rows])
+        embed.description = "\n".join([f"{row[1]} — {row[2]}" for row in rows])
     await itr.response.send_message(embed=embed, ephemeral=True)
 
 
@@ -248,9 +248,9 @@ async def complete(itr: ds.Interaction):
         u2 = itr.guild.get_member(uid2)
         handle1 = handles_db.uid2handle(uid1)
         handle2 = handles_db.uid2handle(uid2)
-        creationTime1 = cf.get_all_accepted_probs(handle1).get(prob, float('inf'))
-        creationTime2 = cf.get_all_accepted_probs(handle2).get(prob, float('inf'))
-        if creationTime1 == float('inf') and creationTime2 == float('inf'):
+        creationTime1 = cf.get_all_accepted_probs(handle1).get(prob, float("inf"))
+        creationTime2 = cf.get_all_accepted_probs(handle2).get(prob, float("inf"))
+        if creationTime1 == float("inf") and creationTime2 == float("inf"):
             embed.description = (
                 "None of you have completed the challenge yet\n"
                 ":point_right: Type `/drop` if you want to give up"
@@ -267,7 +267,7 @@ async def complete(itr: ds.Interaction):
         await itr.followup.send(embed=embed, ephemeral=ephemeral)
 
 
-@bot.tree.command(description=DESCRIPTIONS['gimme'])
+@bot.tree.command(description=DESCRIPTIONS["gimme"])
 async def gimme(itr: ds.Interaction, rating: int):
     """
     :param rating: Rating of the problem

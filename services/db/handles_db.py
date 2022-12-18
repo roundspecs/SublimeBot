@@ -40,8 +40,8 @@ class UidDoesNotExist(Exception):
 
 
 if __name__ == "__main__":
-    print("Does uid 1234 exist?",uid_exists(1234))
-    print("Does uid 693265856305692764 exist?",uid_exists(693265856305692764))
+    print("Does uid 1234 exist?", uid_exists(1234))
+    print("Does uid 693265856305692764 exist?", uid_exists(693265856305692764))
     print()
     print("Handle of 693265856305692764:", uid2handle(693265856305692764))
     print()

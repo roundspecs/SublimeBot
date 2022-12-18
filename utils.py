@@ -17,6 +17,7 @@ def get_duel_prob(uid1: int, uid2: int, rating: int):
             continue
         return prob
 
+
 def get_prob(uid: int, rating: int):
     handle = handles_db.uid2handle(uid)
     tried = cf.get_all_attempted_probs(handle)
