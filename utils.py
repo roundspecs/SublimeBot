@@ -1,7 +1,7 @@
 import random
 
 from services.api import cf
-from services.db import duels_db, handles_db
+from services.db import handles_db
 
 
 def get_duel_prob(uid1: int, uid2: int, rating: int):
